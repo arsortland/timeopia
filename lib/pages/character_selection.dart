@@ -74,13 +74,10 @@ class CharacterSelectionPage extends StatelessWidget {
             const SizedBox(height: 20),
             const Text(
               'Tap any character to view all their animations',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
-              ),
+              style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
             const SizedBox(height: 30),
-            
+
             // Character Grid
             Expanded(
               child: GridView.builder(
@@ -140,10 +137,7 @@ class CharacterButton extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: characterColor.withOpacity(0.1),
-          border: Border.all(
-            color: characterColor,
-            width: 3,
-          ),
+          border: Border.all(color: characterColor, width: 3),
           borderRadius: BorderRadius.circular(15),
           boxShadow: [
             BoxShadow(
@@ -169,7 +163,10 @@ class CharacterButton extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: Transform.translate(
-                    offset: const Offset(39.0, 33.0), // Base offset for first animation
+                    offset: const Offset(
+                      39.0,
+                      33.0,
+                    ), // Base offset for first animation
                     child: Transform.scale(
                       scale: 4.8, // Use the safe proven scale
                       alignment: Alignment.topLeft,
@@ -187,9 +184,9 @@ class CharacterButton extends StatelessWidget {
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 8),
-            
+
             // Character label
             Expanded(
               flex: 1,
