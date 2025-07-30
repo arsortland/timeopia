@@ -60,7 +60,61 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/background/
-    # - images/a_dot_ham.jpeg
+    - assets/models/
+    - assets/models/Char 1/
+    - assets/models/Char 1/Character 1.png
+    - assets/models/Char 1/Preview Character 1.gif
+    - assets/models/Char 2/
+    - assets/models/Char 2/Character 5.png
+    - assets/models/Char 2/Preview Character 5.gif
+    - assets/models/Char 3/
+    - assets/models/Char 3/Character 9.png
+    - assets/models/Char 3/Preview Character 9.gif
+    - assets/models/Char 4/
+    - assets/models/Char 4/Character 1.png
+    - assets/models/Char 4/Preview Character 1.gif
+    - assets/models/Char 5/
+    - assets/models/Char 5/Character 5.png
+    - assets/models/Char 5/Preview Character 5.gif
+    - assets/models/Char 6/
+    - assets/models/Char 6/Character 9.png
+    - assets/models/Char 6/Preview Character 9.gif
+    - assets/models/Char 7/
+    - assets/models/Char 7/Character 1.png
+    - assets/models/Char 7/Preview Character 1.gif
+    - assets/models/Char 8/
+    - assets/models/Char 8/Character 5.png
+    - assets/models/Char 8/Preview Character 5.gif
+    - assets/models/Char 9/
+    - assets/models/Char 9/Character 9.png
+    - assets/models/Char 9/Preview Character 9.gif
+    - assets/models/Char 10/
+    - assets/models/Char 10/Character 1.png
+    - assets/models/Char 10/Preview Character 1.gif
+    - assets/models/Char 11/
+    - assets/models/Char 11/Character 5.png
+    - assets/models/Char 11/Preview Character 5.gif
+    - assets/models/Char 12/
+    - assets/models/Char 12/Character 9.png
+    - assets/models/Char 12/Preview Character 9.gif
+    - assets/models/Char 13/
+    - assets/models/Char 13/Character 1.png
+    - assets/models/Char 13/Preview Character 1.gif
+    - assets/models/Char 14/
+    - assets/models/Char 14/Character 5.png
+    - assets/models/Char 14/Preview Character 5.gif
+    - assets/models/Char 15/
+    - assets/models/Char 15/Character 9.png
+    - assets/models/Char 15/Preview Character 9.gif
+    - assets/models/Char 16/
+    - assets/models/Char 16/Character 1.png
+    - assets/models/Char 16/Preview Character 1.gif
+    - assets/models/Char 17/
+    - assets/models/Char 17/Character 5.png
+    - assets/models/Char 17/Preview Character 5.gif
+    - assets/models/Char 18/
+    - assets/models/Char 18/Character 9.png
+    - assets/models/Char 18/Preview Character 9.gif
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
