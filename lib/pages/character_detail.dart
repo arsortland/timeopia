@@ -215,68 +215,19 @@ class AnimationCard extends StatelessWidget {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(6),
-                  child: GifCropWidget(
-                    gifPath: 'assets/models/Char $characterIndex/$characterGif',
-                    targetRow: row,
-                    targetColumn: column,
-                    cropWidth: 130, // Slightly larger crop area
-                    cropHeight: 130,
-                    offsetX: offsetX,
-                    offsetY: offsetY,
-                    scale: 4.8, // Better scale for visibility
+                  child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    child: Image.asset(
+                      'assets/models/Char $characterIndex/$characterGif',
+                      fit: BoxFit.contain, // Fit entire GIF in container
+                    ),
                   ),
                 ),
               ),
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-// Reusable GIF Crop Widget
-class GifCropWidget extends StatelessWidget {
-  final String gifPath;
-  final int targetRow;
-  final int targetColumn;
-  final double cropWidth;
-  final double cropHeight;
-  final double offsetX;
-  final double offsetY;
-  final double scale;
-
-  const GifCropWidget({
-    super.key,
-    required this.gifPath,
-    required this.targetRow,
-    required this.targetColumn,
-    this.cropWidth = 100,
-    this.cropHeight = 100,
-    this.offsetX = 0.0,
-    this.offsetY = 0.0,
-    this.scale = 1.5,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: cropWidth,
-      height: cropHeight,
-      child: ClipRect(
-        child: Transform.translate(
-          offset: Offset(offsetX, offsetY),
-          child: Transform.scale(
-            scale: scale,
-            alignment: Alignment.topLeft,
-            child: Align(
-              alignment: Alignment.topLeft,
-              widthFactor: 0.2, // 1/5
-              heightFactor: 0.25, // 1/4
-              child: Image.asset(gifPath, fit: BoxFit.none),
-            ),
-          ),
-        ),
       ),
     );
   }

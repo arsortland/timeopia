@@ -162,24 +162,9 @@ class CharacterButton extends StatelessWidget {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
-                  child: Transform.translate(
-                    offset: const Offset(
-                      39.0,
-                      33.0,
-                    ), // Base offset for first animation
-                    child: Transform.scale(
-                      scale: 4.8, // Use the safe proven scale
-                      alignment: Alignment.topLeft,
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        widthFactor: 0.2,
-                        heightFactor: 0.25,
-                        child: Image.asset(
-                          'assets/models/Char $characterIndex/$characterGif',
-                          fit: BoxFit.none,
-                        ),
-                      ),
-                    ),
+                  child: Image.asset(
+                    'assets/models/Char $characterIndex/$characterGif',
+                    fit: BoxFit.cover, // Fill the preview area
                   ),
                 ),
               ),

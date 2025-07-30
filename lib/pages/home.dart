@@ -31,14 +31,31 @@ class _MyHomePageState extends State<MyHomePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Home')),
       body: Stack(
         children: [
           // Layer 1 - Static background (no movement)
           Positioned.fill(
-            child: Image.asset(
-              'assets/background/Hills Layer 01.png',
-              fit: BoxFit.cover,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                // Use different scaling based on screen aspect ratio
+                final screenAspectRatio = constraints.maxWidth / constraints.maxHeight;
+                
+                // For very tall screens (like Pixel 9 XL), use fitHeight to scale larger
+                // This will make the background bigger while maintaining aspect ratio
+                if (screenAspectRatio < 0.6) {
+                  return Image.asset(
+                    'assets/background/Hills Layer 01.png',
+                    fit: BoxFit.fitHeight,
+                    alignment: Alignment.center,
+                  );
+                } else {
+                  return Image.asset(
+                    'assets/background/Hills Layer 01.png',
+                    fit: BoxFit.cover,
+                    alignment: Alignment.center,
+                  );
+                }
+              },
             ),
           ),
 
@@ -55,9 +72,24 @@ class _MyHomePageState extends State<MyHomePage>
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 1.1, // 10% wider
                   height: MediaQuery.of(context).size.height,
-                  child: Image.asset(
-                    'assets/background/Hills Layer 02.png',
-                    fit: BoxFit.cover,
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      final screenAspectRatio = constraints.maxWidth / constraints.maxHeight;
+                      
+                      if (screenAspectRatio < 0.6) {
+                        return Image.asset(
+                          'assets/background/Hills Layer 02.png',
+                          fit: BoxFit.fitHeight,
+                          alignment: Alignment.center,
+                        );
+                      } else {
+                        return Image.asset(
+                          'assets/background/Hills Layer 02.png',
+                          fit: BoxFit.cover,
+                          alignment: Alignment.center,
+                        );
+                      }
+                    },
                   ),
                 ),
               );
@@ -77,9 +109,24 @@ class _MyHomePageState extends State<MyHomePage>
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 1.1, // 10% wider
                   height: MediaQuery.of(context).size.height,
-                  child: Image.asset(
-                    'assets/background/Hills Layer 03.png',
-                    fit: BoxFit.cover,
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      final screenAspectRatio = constraints.maxWidth / constraints.maxHeight;
+                      
+                      if (screenAspectRatio < 0.6) {
+                        return Image.asset(
+                          'assets/background/Hills Layer 03.png',
+                          fit: BoxFit.fitHeight,
+                          alignment: Alignment.center,
+                        );
+                      } else {
+                        return Image.asset(
+                          'assets/background/Hills Layer 03.png',
+                          fit: BoxFit.cover,
+                          alignment: Alignment.center,
+                        );
+                      }
+                    },
                   ),
                 ),
               );
@@ -99,9 +146,24 @@ class _MyHomePageState extends State<MyHomePage>
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 1.1, // 10% wider
                   height: MediaQuery.of(context).size.height,
-                  child: Image.asset(
-                    'assets/background/Hills Layer 04.png',
-                    fit: BoxFit.cover,
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      final screenAspectRatio = constraints.maxWidth / constraints.maxHeight;
+                      
+                      if (screenAspectRatio < 0.6) {
+                        return Image.asset(
+                          'assets/background/Hills Layer 04.png',
+                          fit: BoxFit.fitHeight,
+                          alignment: Alignment.center,
+                        );
+                      } else {
+                        return Image.asset(
+                          'assets/background/Hills Layer 04.png',
+                          fit: BoxFit.cover,
+                          alignment: Alignment.center,
+                        );
+                      }
+                    },
                   ),
                 ),
               );
@@ -121,9 +183,24 @@ class _MyHomePageState extends State<MyHomePage>
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 1.1, // 10% wider
                   height: MediaQuery.of(context).size.height,
-                  child: Image.asset(
-                    'assets/background/Hills Layer 05.png',
-                    fit: BoxFit.cover,
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      final screenAspectRatio = constraints.maxWidth / constraints.maxHeight;
+                      
+                      if (screenAspectRatio < 0.6) {
+                        return Image.asset(
+                          'assets/background/Hills Layer 05.png',
+                          fit: BoxFit.fitHeight,
+                          alignment: Alignment.center,
+                        );
+                      } else {
+                        return Image.asset(
+                          'assets/background/Hills Layer 05.png',
+                          fit: BoxFit.cover,
+                          alignment: Alignment.center,
+                        );
+                      }
+                    },
                   ),
                 ),
               );
@@ -143,9 +220,24 @@ class _MyHomePageState extends State<MyHomePage>
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 1.1, // 10% wider
                   height: MediaQuery.of(context).size.height,
-                  child: Image.asset(
-                    'assets/background/Hills Layer 06.png',
-                    fit: BoxFit.cover,
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      final screenAspectRatio = constraints.maxWidth / constraints.maxHeight;
+                      
+                      if (screenAspectRatio < 0.6) {
+                        return Image.asset(
+                          'assets/background/Hills Layer 06.png',
+                          fit: BoxFit.fitHeight,
+                          alignment: Alignment.center,
+                        );
+                      } else {
+                        return Image.asset(
+                          'assets/background/Hills Layer 06.png',
+                          fit: BoxFit.cover,
+                          alignment: Alignment.center,
+                        );
+                      }
+                    },
                   ),
                 ),
               );
@@ -175,11 +267,28 @@ class _MyHomePageState extends State<MyHomePage>
                 const SizedBox(height: 40),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.grey[200], // Mellow light background
+                    foregroundColor: Colors.black, // Black text
                     padding: const EdgeInsets.symmetric(
                       horizontal: 30,
                       vertical: 15,
                     ),
-                    textStyle: const TextStyle(fontSize: 18),
+                    textStyle: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      shadows: [
+                        Shadow(
+                          offset: Offset(1.0, 1.0),
+                          blurRadius: 2.0,
+                          color: Colors.grey,
+                        ),
+                      ],
+                    ),
+                    elevation: 3,
+                    shadowColor: Colors.black.withOpacity(0.3),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0), // Slightly rounded edges
+                    ),
                   ),
                   onPressed: () {
                     Navigator.push(
@@ -192,11 +301,28 @@ class _MyHomePageState extends State<MyHomePage>
                 const SizedBox(height: 15),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.grey[200], // Mellow light background
+                    foregroundColor: Colors.black, // Black text
                     padding: const EdgeInsets.symmetric(
                       horizontal: 30,
                       vertical: 15,
                     ),
-                    textStyle: const TextStyle(fontSize: 18),
+                    textStyle: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      shadows: [
+                        Shadow(
+                          offset: Offset(1.0, 1.0),
+                          blurRadius: 2.0,
+                          color: Colors.grey,
+                        ),
+                      ],
+                    ),
+                    elevation: 3,
+                    shadowColor: Colors.black.withOpacity(0.3),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0), // Slightly rounded edges
+                    ),
                   ),
                   onPressed: () {
                     Navigator.push(
