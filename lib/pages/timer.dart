@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:async';
+import 'dart:ui';
 
 class Timerpage extends StatefulWidget {
   const Timerpage({super.key});
@@ -355,144 +356,189 @@ class _TimerpageState extends State<Timerpage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Pomodoro Timer'),
-        backgroundColor: _phaseColor,
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // App Status Indicator
-              if (_isAppInBackground) ...[
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.orange.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.orange),
+      body: Stack(
+        children: [
+          // Background layer with reduced blur effect
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/background/background2.png'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.3), // Reduced white overlay
+                ),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(
+                    sigmaX: 10.0,
+                    sigmaY: 10.0,
+                  ), // Reduced blur
+                  child: Container(color: Colors.transparent),
+                ),
+              ),
+            ),
+          ),
+          // Back button
+          Positioned(
+            top: 40,
+            left: 16,
+            child: SafeArea(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(Icons.arrow_back, color: Colors.white, size: 24),
+                ),
+              ),
+            ),
+          ),
+          // Main content
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // App Status Indicator
+                  if (_isAppInBackground) ...[
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.orange.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Colors.orange),
+                      ),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.warning, color: Colors.orange),
+                          SizedBox(width: 8),
+                          Text(
+                            'Focus mode: Stay in the app!',
+                            style: TextStyle(
+                              color: Colors.orange,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+
+                  // Phase Indicator
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: _phaseColor.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(25),
+                      border: Border.all(color: _phaseColor, width: 2),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          _isBreakTime ? Icons.coffee : Icons.work,
+                          color: _phaseColor,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          _currentPhase,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: _phaseColor,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
+
+                  const SizedBox(height: 20),
+
+                  // Pomodoro Counter
+                  if (_completedPomodoros > 0) ...[
+                    Text(
+                      'Completed: $_completedPomodoros 🍅',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+
+                  // Timer Display
+                  Container(
+                    padding: const EdgeInsets.all(30),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: _phaseColor, width: 3),
+                      borderRadius: BorderRadius.circular(20),
+                      color: _phaseColor.withOpacity(0.1),
+                    ),
+                    child: Text(
+                      _formattedTime,
+                      style: TextStyle(
+                        fontSize: 72,
+                        fontWeight: FontWeight.bold,
+                        color: _phaseColor,
+                        fontFamily: 'monospace',
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 40),
+
+                  // Control Buttons
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Icon(Icons.warning, color: Colors.orange),
-                      SizedBox(width: 8),
-                      Text(
-                        'Focus mode: Stay in the app!',
-                        style: TextStyle(
-                          color: Colors.orange,
-                          fontWeight: FontWeight.bold,
+                      ElevatedButton.icon(
+                        onPressed: _isRunning ? _stopTimer : _startTimer,
+                        icon: Icon(_isRunning ? Icons.pause : Icons.play_arrow),
+                        label: Text(_isRunning ? 'Pause' : 'Start'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: _isRunning
+                              ? Colors.orange
+                              : _phaseColor,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 12,
+                          ),
+                        ),
+                      ),
+                      ElevatedButton.icon(
+                        onPressed: _resetTimer,
+                        icon: const Icon(Icons.refresh),
+                        label: const Text('Reset'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey[600],
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 12,
+                          ),
                         ),
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(height: 20),
-              ],
-
-              // Phase Indicator
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 10,
-                ),
-                decoration: BoxDecoration(
-                  color: _phaseColor.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(25),
-                  border: Border.all(color: _phaseColor, width: 2),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      _isBreakTime ? Icons.coffee : Icons.work,
-                      color: _phaseColor,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      _currentPhase,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: _phaseColor,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 20),
-
-              // Pomodoro Counter
-              if (_completedPomodoros > 0) ...[
-                Text(
-                  'Completed: $_completedPomodoros 🍅',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(height: 20),
-              ],
-
-              // Timer Display
-              Container(
-                padding: const EdgeInsets.all(30),
-                decoration: BoxDecoration(
-                  border: Border.all(color: _phaseColor, width: 3),
-                  borderRadius: BorderRadius.circular(20),
-                  color: _phaseColor.withOpacity(0.1),
-                ),
-                child: Text(
-                  _formattedTime,
-                  style: TextStyle(
-                    fontSize: 72,
-                    fontWeight: FontWeight.bold,
-                    color: _phaseColor,
-                    fontFamily: 'monospace',
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 40),
-
-              // Control Buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton.icon(
-                    onPressed: _isRunning ? _stopTimer : _startTimer,
-                    icon: Icon(_isRunning ? Icons.pause : Icons.play_arrow),
-                    label: Text(_isRunning ? 'Pause' : 'Start'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _isRunning ? Colors.orange : _phaseColor,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 12,
-                      ),
-                    ),
-                  ),
-                  ElevatedButton.icon(
-                    onPressed: _resetTimer,
-                    icon: const Icon(Icons.refresh),
-                    label: const Text('Reset'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey[600],
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 12,
-                      ),
-                    ),
-                  ),
                 ],
               ),
-            ],
+            ),
           ),
-        ),
+        ], // Close Stack children
       ),
     );
   }

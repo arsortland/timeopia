@@ -11,20 +11,25 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
+  late AnimationController _glowController;
+  late Animation<double> _glowAnimation;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      duration: const Duration(seconds: 20),
+    _glowController = AnimationController(
+      duration: const Duration(seconds: 2),
       vsync: this,
-    )..repeat(reverse: true); // This makes it go back and forth
+    );
+    _glowAnimation = Tween<double>(begin: 0.3, end: 1.0).animate(
+      CurvedAnimation(parent: _glowController, curve: Curves.easeInOut),
+    );
+    _glowController.repeat(reverse: true);
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _glowController.dispose();
     super.dispose();
   }
 
@@ -33,304 +38,123 @@ class _MyHomePageState extends State<MyHomePage>
     return Scaffold(
       body: Stack(
         children: [
-          // Layer 1 - Static background (no movement)
+          // Background layer - bottom z-index
           Positioned.fill(
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                // Use different scaling based on screen aspect ratio
-                final screenAspectRatio = constraints.maxWidth / constraints.maxHeight;
-                
-                // For very tall screens (like Pixel 9 XL), use fitHeight to scale larger
-                // This will make the background bigger while maintaining aspect ratio
-                if (screenAspectRatio < 0.6) {
-                  return Image.asset(
-                    'assets/background/Hills Layer 01.png',
-                    fit: BoxFit.fitHeight,
-                    alignment: Alignment.center,
-                  );
-                } else {
-                  return Image.asset(
-                    'assets/background/Hills Layer 01.png',
-                    fit: BoxFit.cover,
-                    alignment: Alignment.center,
-                  );
-                }
-              },
+            child: Image.asset(
+              'assets/background/background2.png',
+              fit: BoxFit.cover,
             ),
           ),
 
-          // Layer 2 - Slight movement (same direction as main)
-          AnimatedBuilder(
-            animation: _controller,
-            builder: (context, child) {
-              return Positioned(
-                left:
-                    ((_controller.value - 0.5) * 2) * 10 -
-                    (MediaQuery.of(context).size.width *
-                        0.05), // ±10 pixels movement, centered
-                top: 0,
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 1.1, // 10% wider
-                  height: MediaQuery.of(context).size.height,
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      final screenAspectRatio = constraints.maxWidth / constraints.maxHeight;
-                      
-                      if (screenAspectRatio < 0.6) {
-                        return Image.asset(
-                          'assets/background/Hills Layer 02.png',
-                          fit: BoxFit.fitHeight,
-                          alignment: Alignment.center,
-                        );
-                      } else {
-                        return Image.asset(
-                          'assets/background/Hills Layer 02.png',
-                          fit: BoxFit.cover,
-                          alignment: Alignment.center,
-                        );
-                      }
-                    },
-                  ),
-                ),
-              );
-            },
-          ),
-
-          // Layer 3 - Opposite direction
-          AnimatedBuilder(
-            animation: _controller,
-            builder: (context, child) {
-              return Positioned(
-                left:
-                    -((_controller.value - 0.5) * 2) * 12 -
-                    (MediaQuery.of(context).size.width *
-                        0.05), // ±12 pixels opposite movement, centered
-                top: 0,
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 1.1, // 10% wider
-                  height: MediaQuery.of(context).size.height,
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      final screenAspectRatio = constraints.maxWidth / constraints.maxHeight;
-                      
-                      if (screenAspectRatio < 0.6) {
-                        return Image.asset(
-                          'assets/background/Hills Layer 03.png',
-                          fit: BoxFit.fitHeight,
-                          alignment: Alignment.center,
-                        );
-                      } else {
-                        return Image.asset(
-                          'assets/background/Hills Layer 03.png',
-                          fit: BoxFit.cover,
-                          alignment: Alignment.center,
-                        );
-                      }
-                    },
-                  ),
-                ),
-              );
-            },
-          ),
-
-          // Layer 4 - Same direction but faster
-          AnimatedBuilder(
-            animation: _controller,
-            builder: (context, child) {
-              return Positioned(
-                left:
-                    ((_controller.value - 0.5) * 2) * 18 -
-                    (MediaQuery.of(context).size.width *
-                        0.05), // ±18 pixels movement, centered
-                top: 0,
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 1.1, // 10% wider
-                  height: MediaQuery.of(context).size.height,
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      final screenAspectRatio = constraints.maxWidth / constraints.maxHeight;
-                      
-                      if (screenAspectRatio < 0.6) {
-                        return Image.asset(
-                          'assets/background/Hills Layer 04.png',
-                          fit: BoxFit.fitHeight,
-                          alignment: Alignment.center,
-                        );
-                      } else {
-                        return Image.asset(
-                          'assets/background/Hills Layer 04.png',
-                          fit: BoxFit.cover,
-                          alignment: Alignment.center,
-                        );
-                      }
-                    },
-                  ),
-                ),
-              );
-            },
-          ),
-
-          // Layer 5 - Opposite direction, faster
-          AnimatedBuilder(
-            animation: _controller,
-            builder: (context, child) {
-              return Positioned(
-                left:
-                    -((_controller.value - 0.5) * 2) * 22 -
-                    (MediaQuery.of(context).size.width *
-                        0.05), // ±22 pixels opposite movement, centered
-                top: 0,
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 1.1, // 10% wider
-                  height: MediaQuery.of(context).size.height,
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      final screenAspectRatio = constraints.maxWidth / constraints.maxHeight;
-                      
-                      if (screenAspectRatio < 0.6) {
-                        return Image.asset(
-                          'assets/background/Hills Layer 05.png',
-                          fit: BoxFit.fitHeight,
-                          alignment: Alignment.center,
-                        );
-                      } else {
-                        return Image.asset(
-                          'assets/background/Hills Layer 05.png',
-                          fit: BoxFit.cover,
-                          alignment: Alignment.center,
-                        );
-                      }
-                    },
-                  ),
-                ),
-              );
-            },
-          ),
-
-          // Layer 6 - Fastest movement (same direction as main)
-          AnimatedBuilder(
-            animation: _controller,
-            builder: (context, child) {
-              return Positioned(
-                left:
-                    ((_controller.value - 0.5) * 2) * 28 -
-                    (MediaQuery.of(context).size.width *
-                        0.05), // ±28 pixels movement, centered
-                top: 0,
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 1.1, // 10% wider
-                  height: MediaQuery.of(context).size.height,
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      final screenAspectRatio = constraints.maxWidth / constraints.maxHeight;
-                      
-                      if (screenAspectRatio < 0.6) {
-                        return Image.asset(
-                          'assets/background/Hills Layer 06.png',
-                          fit: BoxFit.fitHeight,
-                          alignment: Alignment.center,
-                        );
-                      } else {
-                        return Image.asset(
-                          'assets/background/Hills Layer 06.png',
-                          fit: BoxFit.cover,
-                          alignment: Alignment.center,
-                        );
-                      }
-                    },
-                  ),
-                ),
-              );
-            },
+          // Logo layer - positioned in top 1/5 of screen with animated glow
+          Positioned(
+            top:
+                MediaQuery.of(context).size.height *
+                0.03, // Start at 3% from top (moved up slightly)
+            left: 0,
+            right: 0,
+            child: Container(
+              height:
+                  MediaQuery.of(context).size.height *
+                  0.28, // Increased from 20% to 28% of screen height
+              padding: EdgeInsets.symmetric(
+                horizontal:
+                    MediaQuery.of(context).size.width *
+                    0.08, // Reduced padding to 8% for more logo space
+              ),
+              child: AnimatedBuilder(
+                animation: _glowAnimation,
+                builder: (context, child) {
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      // Glow effect positioned behind the logo
+                      Container(
+                        height:
+                            MediaQuery.of(context).size.height *
+                            0.28 *
+                            0.4, // 40% of logo height for middle section
+                        width:
+                            MediaQuery.of(context).size.width *
+                            0.6, // 60% of available width
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(
+                            20.0,
+                          ), // Rounded edges for the glow
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.white.withOpacity(
+                                _glowAnimation.value * 0.4,
+                              ),
+                              blurRadius: 20.0 * _glowAnimation.value,
+                              spreadRadius: 3.0 * _glowAnimation.value,
+                            ),
+                            BoxShadow(
+                              color: Colors.blue.withOpacity(
+                                _glowAnimation.value * 0.2,
+                              ),
+                              blurRadius: 35.0 * _glowAnimation.value,
+                              spreadRadius: 6.0 * _glowAnimation.value,
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Main logo image on top
+                      Image.asset(
+                        'assets/background/logoname-removebg.png',
+                        fit: BoxFit.contain,
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
           ),
 
           // Content overlay with better visibility
-          Center(
+          Positioned(
+            bottom:
+                MediaQuery.of(context).size.height *
+                0.02, // Position from bottom (moved even lower)
+            left: 0,
+            right: 0,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.7),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: const Text(
-                    "WELCOME TO TIMEOPIA",
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 40),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey[200], // Mellow light background
-                    foregroundColor: Colors.black, // Black text
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 30,
-                      vertical: 15,
-                    ),
-                    textStyle: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      shadows: [
-                        Shadow(
-                          offset: Offset(1.0, 1.0),
-                          blurRadius: 2.0,
-                          color: Colors.grey,
-                        ),
-                      ],
-                    ),
-                    elevation: 3,
-                    shadowColor: Colors.black.withOpacity(0.3),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0), // Slightly rounded edges
-                    ),
-                  ),
-                  onPressed: () {
+                // Play button (was Focus)
+                GestureDetector(
+                  onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => Timerpage()),
                     );
                   },
-                  child: const Text("Focus"),
-                ),
-                const SizedBox(height: 15),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey[200], // Mellow light background
-                    foregroundColor: Colors.black, // Black text
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 30,
-                      vertical: 15,
-                    ),
-                    textStyle: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      shadows: [
-                        Shadow(
-                          offset: Offset(1.0, 1.0),
-                          blurRadius: 2.0,
-                          color: Colors.grey,
-                        ),
-                      ],
-                    ),
-                    elevation: 3,
-                    shadowColor: Colors.black.withOpacity(0.3),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0), // Slightly rounded edges
+                  child: Container(
+                    width: 350,
+                    height: 140,
+                    child: Image.asset(
+                      'assets/buttons/Playbtn.png',
+                      fit: BoxFit.contain,
                     ),
                   ),
-                  onPressed: () {
+                ),
+                const SizedBox(height: 0),
+                // Collection button
+                GestureDetector(
+                  onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => CollectionPage()),
                     );
                   },
-                  child: const Text("Collection"),
+                  child: Container(
+                    width: 350,
+                    height: 140,
+                    child: Image.asset(
+                      'assets/buttons/Collectionbtn.png',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
                 ),
               ],
             ),
