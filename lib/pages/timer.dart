@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:async';
 import 'dart:ui';
+import '../services/music_service.dart';
 
 class Timerpage extends StatefulWidget {
   const Timerpage({super.key});
@@ -233,6 +234,9 @@ class _TimerpageState extends State<Timerpage> with WidgetsBindingObserver {
       _isRunning = true;
     });
 
+    // Stop background music when timer starts
+    MusicService.setTimerActive(true);
+
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         if (_seconds > 0) {
@@ -261,6 +265,9 @@ class _TimerpageState extends State<Timerpage> with WidgetsBindingObserver {
       _isRunning = false;
       _isAppInBackground = false;
     });
+
+    // Resume background music when timer stops
+    MusicService.setTimerActive(false);
   }
 
   void _resetTimer() {
@@ -396,6 +403,33 @@ class _TimerpageState extends State<Timerpage> with WidgetsBindingObserver {
                     Navigator.pop(context);
                   },
                   icon: Icon(Icons.arrow_back, color: Colors.white, size: 24),
+                ),
+              ),
+            ),
+          ),
+          // Music toggle button
+          Positioned(
+            top: 40,
+            right: 16,
+            child: SafeArea(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      MusicService.toggleMusic();
+                    });
+                  },
+                  icon: Icon(
+                    MusicService.isMusicEnabled
+                        ? Icons.music_note
+                        : Icons.music_off,
+                    color: Colors.white,
+                    size: 24,
+                  ),
                 ),
               ),
             ),

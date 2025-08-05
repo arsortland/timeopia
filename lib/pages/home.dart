@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Timer.dart';
 import 'collection.dart';
+import '../services/music_service.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -25,6 +26,12 @@ class _MyHomePageState extends State<MyHomePage>
       CurvedAnimation(parent: _glowController, curve: Curves.easeInOut),
     );
     _glowController.repeat(reverse: true);
+
+    // Start background music when home page loads
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Future.delayed(Duration(milliseconds: 200));
+      MusicService.startBackgroundMusic();
+    });
   }
 
   @override
